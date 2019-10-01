@@ -20,8 +20,8 @@ func Provider() terraform.ResourceProvider {
 				DefaultFunc: schema.EnvDefaultFunc("PROFILE", ""),
 			},
 			"kube_file": {
-				Type:        schema.TypeString,
-				Required:    true,
+				Type:     schema.TypeString,
+				Required: true,
 			},
 			"aws_secret_binding": {
 				Type:     schema.TypeString,
