@@ -7,13 +7,39 @@ This folder contains a set of examples which use Gardener services to deploy [aw
 provider "gardener" {
   profile            = "<my-gardener-project>"
   <provider>_secret_binding = "<my-gardener-<provider>-secret>"
-  kube_path          = "<my-gardener-service-account-kubeconfig>"
+  kube_file          = "${file("<my-gardener-service-account-kubeconfig>")}"
 }
 ```
+You can pass the kube_file using the raw text alone as follows:
+```bash
+kube_path          =<<-EOT
+    kind: Config
+    clusters:
+      - cluster:
+          certificate-authority-data: >-
+            <certificate-authority-data>
+          server: "https://gardener.garden.canary.k8s.ondemand.com"
+        name: garden
+    users:
+      - user:
+          token: >-
+            <token>
+        name: robot
+    contexts:
+      - context:
+          cluster: garden
+          user: robot
+          namespace: garden-<profile>
+        name: garden-<profile>-robot
+    current-context: garden-<profile>-robot
+
+    EOT
+```
+
 This section includes the following parameters:
 * **profile** - the profile you want to deploy to in gardener. 
 * **<provider>_secret_binding** - the provider secret binding defined for the profile that you want to use. There might be more than one secret per provider for a profile.
-* **kube_path** - the path for the kubeconfig file of the service bot of the profile. 
+* **kube_file** - the raw string of the kube config file. 
 
 ## Installation
 Follow these steps to run an example:

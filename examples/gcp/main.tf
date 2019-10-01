@@ -1,7 +1,29 @@
 provider "gardener" {
   profile            = "<my-gardener-project>"
   gcp_secret_binding = "<my-gardener-gcp-secret>"
-  kube_path          = "<my-gardener-service-account-kubeconfig>"
+  kube_file          = "${file("<my-gardener-service-account-kubeconfig>")}"
+  /*kube_file          =<<-EOT
+    kind: Config
+    clusters:
+      - cluster:
+          certificate-authority-data: >-
+            <certificate-authority-data>
+          server: "https://gardener.garden.canary.k8s.ondemand.com"
+        name: garden
+    users:
+      - user:
+          token: >-
+            <token>
+        name: robot
+    contexts:
+      - context:
+          cluster: garden
+          user: robot
+          namespace: garden-<profile>
+        name: garden-<profile>-robot
+    current-context: garden-<profile>-robot
+
+    EOT*/
 }
 
 resource "gardener_gcp_shoot" "my-server" {

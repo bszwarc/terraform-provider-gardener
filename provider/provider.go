@@ -19,10 +19,9 @@ func Provider() terraform.ResourceProvider {
 				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("PROFILE", ""),
 			},
-			"kube_path": {
+			"kube_file": {
 				Type:        schema.TypeString,
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("KUBECONFIG", ""),
 			},
 			"aws_secret_binding": {
 				Type:     schema.TypeString,
@@ -68,7 +67,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	}
 	config := &client.Config{
 		Profile:        d.Get("profile").(string),
-		KubePath:       d.Get("kube_path").(string),
+		KubeFile:       d.Get("kube_file").(string),
 		SecretBindings: SecretBindings,
 	}
 	return client.New(config)

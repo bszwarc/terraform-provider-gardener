@@ -45,7 +45,7 @@ Perform the following steps to use the provider:
     provider "gardener" {
         profile            = "<my-gardener-project>"
         gcp_secret_binding = "<my-gardener-gcp-secret>"
-        kube_path          = "<my-gardener-service-account-kubeconfig>"
+        kube_file          = "${file("<my-gardener-service-account-kubeconfig>")}"
     }
     ```
 3. Initialize Terraform:

@@ -20,8 +20,8 @@ func New(c *Config) (interface{}, error) {
 		c.SecretBindings.OpenStackSecretBinding == "" && c.SecretBindings.AliCloudSecretBinding == "" {
 		return nil, errors.New("at least one binding needs to be defined")
 	}
-
-	config, err := clientcmd.BuildConfigFromFlags("", c.KubePath)
+	kubeBytes := []byte(c.KubeFile)
+	config, err := clientcmd.RESTConfigFromKubeConfig(kubeBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func New(c *Config) (interface{}, error) {
 
 type Config struct {
 	Profile        string
-	KubePath       string
+	KubeFile       string
 	SecretBindings *Bindings
 }
 
